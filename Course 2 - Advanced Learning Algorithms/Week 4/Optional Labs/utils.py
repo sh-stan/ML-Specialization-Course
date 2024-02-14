@@ -17,7 +17,21 @@ def compute_entropy(y):
         return 0
     else:
         return -entropy*np.log2(entropy) - (1-entropy)*np.log2(1-entropy)
-     
+
+def prepare_dataset(filename):
+    
+    data = np.loadtxt(filename, delimiter=",")
+    
+    x = data[:,:-1]
+    y = data[:,-1]
+    
+    # Get 60% of the dataset as the training set. Put the remaining 40% in temporary variables.
+    x_train, x_, y_train, y_ = train_test_split(x, y, test_size=0.40, random_state=80)
+
+    # Split the 40% subset above into two: one half for cross validation and the other for the test set
+    x_cv, x_test, y_cv, y_test = train_test_split(x_, y_, test_size=0.50, random_state=80)
+    
+    return x_train, y_train, x_cv, y_cv, x_test, y_test
 
 def split_dataset(X, node_indices, feature):
 
@@ -233,4 +247,4 @@ def plot_entropy():
 
     slider.on_changed(update)
     return slider
-    #plt.plot()
+    #plt.plot
